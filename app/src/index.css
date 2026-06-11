@@ -169,6 +169,84 @@ body {
   color: #333;
   margin-bottom: 7px;
 }
+.modal .sub {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+.modal .strap {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #444;
+}
+.modal .facts {
+  margin: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+.modal .factrow {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+}
+.modal .factrow:last-child {
+  margin-bottom: 0;
+}
+.modal .factrow dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.modal .factrow dd {
+  margin: 0;
+  font-size: 0.86rem;
+}
+.modal .curated-note {
+  margin-top: 14px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* deep-dive quick list */
+.deep-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.deep-link {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  color: #15356b;
+}
+.deep-link:hover {
+  background: #eef2fb;
+}
+
+/* CAI overlay banner */
+.cai-banner {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  width: min(560px, calc(100% - 28px));
+  padding: 12px 16px;
+}
+.cai-banner strong {
+  font-size: 0.95rem;
+}
+.cai-banner p {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #444;
+}
 .header p {
   margin: 0;
   font-size: 0.82rem;
