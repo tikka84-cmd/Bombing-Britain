@@ -48,6 +48,38 @@ Known limitations to surface honestly in the UI:
 - ~190 unconfirmed locations still being geocoded. Flag them; never silently guess.
 - Casualty figures were sometimes revised; the dataset uses the later figure.
 
+## Phase 1 findings: the real dataset (authoritative, overrides assumptions above)
+
+Recovered from the Internet Archive Wayback Machine (the live source is now
+paywalled): `data-pipeline/raw/Bombing-Britain-data.xlsx`, 32,869 rows, one
+sheet, kept gitignored. Inspector: `data-pipeline/scripts/01_inspect.mjs`
+(Node + SheetJS, pipeline-only dependency, never shipped in the app). Full
+machine summary in `data-pipeline/DATA_NOTES.md`.
+
+Real columns (13): Volume Reference, Intelligence Summary Number, Start Date,
+End Date, Time, Civil Defence Region, Location, Country, Killed, Injured,
+Total Casualties, Additional Notes, Link to Page.
+
+Deltas from the brief, and decisions:
+
+- NO attack-type column. Decision: layers/filters use Civil Defence Region and
+  Country as the primary dimension, PLUS a best-effort attack-type layer derived
+  from Additional Notes keywords, labelled "where recorded" (~20% coverage).
+- Date is a range (Start/End Date), UK DD/MM/YYYY. Two rows are "Uncertain"/
+  "Unspecified" and must be flagged, not parsed.
+- Time enum values: Night, Day, Unspecified (plus a typo "NIght" to fix).
+- Country: England, Wales, Scotland, Northern Ireland, Channel Islands.
+- Civil Defence Region: 13 numbered regions, plus "N/A" and a typo
+  "3: North Midland" (vs "North Midlands") to normalise.
+- London casualties are city-wide aggregates ("Casualty figure for entire
+  London" x3056), NOT per-location. Do not size/colour London points by
+  casualties naively; surface this caveat in the UI.
+- Casualty non-numeric forms to normalise: Unspecified (any case), quoted vague
+  descriptors, "N+", "N or more", "?", "Illegible".
+- V-2 under-recording confirmed by the data: 1944 = 7,700 rows but 1945 = 211.
+- No coordinates in the data; geocoding (Phase 3) still required. Country and
+  Civil Defence Region help. Link to Page = the paywalled HO 203 page links.
+
 ## Licensing (resolve before rehosting the raw file)
 
 The transcribed dataset is a derivative work; underlying HO 203 records are Crown
