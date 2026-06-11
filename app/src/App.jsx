@@ -1,7 +1,50 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { formatDateRange, formatPeriod, formatCasualty, formatTags } from './format'
+
+// Timeline: day index 0 = 1939-09-01 (matches 05_build.mjs).
+const TIMELINE_BASE = Date.UTC(1939, 8, 1)
+const NO_DATE = 9000000 // anything >= this is a row with no usable date
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const PLAY_STEP = 4 // days advanced per tick
+const PLAY_INTERVAL = 60 // ms per tick
+
+function dayToLabel(d) {
+  const dt = new Date(TIMELINE_BASE + d * 86400000)
+  return `${dt.getUTCDate()} ${MONTHS[dt.getUTCMonth()]} ${dt.getUTCFullYear()}`
+}
+
+// count of sorted values <= x
+function upperBound(arr, x) {
+  let lo = 0
+  let hi = arr.length
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1
+    if (arr[mid] <= x) lo = mid + 1
+    else hi = mid
+  }
+  return lo
+}
+
+// cumulative reveal with a recency highlight (recent attacks brighter)
+function recencyOpacity(cur) {
+  return [
+    'interpolate',
+    ['linear'],
+    ['-', cur, ['get', 't']],
+    0, 0.95,
+    21, 0.85,
+    90, 0.55,
+    100000, 0.4,
+  ]
+}
+
+function applyTime(map, cur) {
+  if (!map.getLayer('raids-circles')) return
+  map.setFilter('raids-circles', ['<=', ['get', 't'], cur])
+  map.setPaintProperty('raids-circles', 'circle-opacity', recencyOpacity(cur))
+}
 
 // Free, no-API-key basemap: CARTO Positron (light, neutral, good for data viz).
 const BASEMAP_STYLE = {
@@ -66,6 +109,16 @@ export default function App() {
   const [count, setCount] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [ready, setReady] = useState(false)
+  const [range, setRange] = useState(null) // {min, max}
+  const [current, setCurrent] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const [sortedT, setSortedT] = useState(null)
+
+  const upTo = useMemo(
+    () => (sortedT ? upperBound(sortedT, current) : null),
+    [sortedT, current],
+  )
 
   useEffect(() => {
     if (mapRef.current) return
@@ -110,6 +163,19 @@ export default function App() {
         map.on('mouseleave', 'raids-circles', () => {
           map.getCanvas().style.cursor = ''
         })
+
+        // timeline range from the data (ignore no-date sentinel rows)
+        const ts = data.features
+          .map((f) => f.properties.t)
+          .filter((t) => t < NO_DATE)
+          .sort((a, b) => a - b)
+        const minT = ts[0]
+        const maxT = ts[ts.length - 1]
+        setSortedT(ts)
+        setRange({ min: minT, max: maxT })
+        setCurrent(maxT) // start with everything shown
+        applyTime(map, maxT)
+        setReady(true)
         setLoading(false)
       } catch (err) {
         setError(err.message)
@@ -123,6 +189,32 @@ export default function App() {
     }
   }, [])
 
+  // re-apply the timeline filter whenever the current day changes
+  useEffect(() => {
+    if (ready && mapRef.current) applyTime(mapRef.current, current)
+  }, [current, ready])
+
+  // play loop
+  useEffect(() => {
+    if (!playing || !range) return
+    const id = setInterval(() => {
+      setCurrent((c) => {
+        const next = c + PLAY_STEP
+        if (next >= range.max) {
+          setPlaying(false)
+          return range.max
+        }
+        return next
+      })
+    }, PLAY_INTERVAL)
+    return () => clearInterval(id)
+  }, [playing, range])
+
+  const togglePlay = () => {
+    if (!playing && range && current >= range.max) setCurrent(range.min)
+    setPlaying((p) => !p)
+  }
+
   return (
     <>
       <div className="map" ref={mapContainer} />
@@ -134,7 +226,11 @@ export default function App() {
           watch the bombing spread across the country.
         </p>
         {count != null && (
-          <div className="count">{count.toLocaleString('en-GB')} located attacks shown</div>
+          <div className="count">
+            {ready
+              ? `${(upTo ?? 0).toLocaleString('en-GB')} of ${count.toLocaleString('en-GB')} located attacks by this date`
+              : `${count.toLocaleString('en-GB')} located attacks`}
+          </div>
         )}
       </div>
 
@@ -152,6 +248,26 @@ export default function App() {
       {error && <div className="loading panel">Could not load data: {error}</div>}
 
       {selected && <DetailCard p={selected} onClose={() => setSelected(null)} />}
+
+      {range && (
+        <div className="timeline panel">
+          <button className="play" onClick={togglePlay} aria-label={playing ? 'Pause' : 'Play'}>
+            {playing ? '❚❚' : '▶'}
+          </button>
+          <input
+            className="scrubber"
+            type="range"
+            min={range.min}
+            max={range.max}
+            value={current}
+            onChange={(e) => {
+              setPlaying(false)
+              setCurrent(Number(e.target.value))
+            }}
+          />
+          <div className="tldate">{dayToLabel(current)}</div>
+        </div>
+      )}
 
       <div className="attribution panel">
         Data: <em>Bombing Britain: an air raid map</em>, Dr Laura Blomvall, University of York, with

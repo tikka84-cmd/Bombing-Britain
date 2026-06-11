@@ -23,6 +23,16 @@ const outPath = path.join(repoRoot, 'app', 'public', 'raids.geojson')
 const SIZED_BASES = new Set(['exact', 'plus', 'range_upper'])
 const round5 = (n) => Math.round(n * 1e5) / 1e5
 
+// Timeline day index: whole days since 1939-09-01. Rows with no usable date get
+// a sentinel far past the campaign so the timeline filter never reveals them.
+const TIMELINE_BASE = Date.UTC(1939, 8, 1)
+const NO_DATE = 9999999
+function dayIndex(iso) {
+  if (!iso) return NO_DATE
+  const [y, m, d] = iso.split('-').map(Number)
+  return Math.round((Date.UTC(y, m - 1, d) - TIMELINE_BASE) / 86400000)
+}
+
 function main() {
   if (!fs.existsSync(inPath)) {
     console.error(`Missing ${inPath}. Run 03_geocode first.`)
@@ -61,6 +71,7 @@ function main() {
         link: r.link || '',
         gc: r.geocode ? r.geocode.confidence : null,
         sz: sizeValue,
+        t: dayIndex(r.startDate),
       },
     })
   }
@@ -69,6 +80,8 @@ function main() {
   fs.mkdirSync(path.dirname(outPath), { recursive: true })
   fs.writeFileSync(outPath, JSON.stringify(fc), 'utf8')
 
+  const days = features.map((f) => f.properties.t).filter((t) => t !== NO_DATE)
+  console.log(`Timeline day index range: ${Math.min(...days)} … ${Math.max(...days)} (0 = 1939-09-01)`)
   const sized = features.filter((f) => f.properties.sz >= 0).length
   console.log(`Wrote ${path.relative(repoRoot, outPath).replace(/\\/g, '/')}`)
   console.log(`Features: ${features.length.toLocaleString('en-GB')} (mapped)`)
