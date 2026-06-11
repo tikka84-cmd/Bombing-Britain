@@ -8,6 +8,7 @@
     "inspect": "node scripts/01_inspect.mjs",
     "clean": "node scripts/02_clean.mjs",
     "geocode": "node scripts/03_geocode.mjs",
+    "build": "node scripts/05_build.mjs",
     "test": "node scripts/02_clean.test.mjs"
   },
   "dependencies": {
