@@ -6,6 +6,10 @@ data-pipeline/raw/*
 data-pipeline/out/*
 !data-pipeline/out/.gitkeep
 
+# Offline gazetteer (GeoNames, CC BY 4.0) — downloaded, not redistributed here
+data-pipeline/gazetteer/*
+!data-pipeline/gazetteer/.gitkeep
+
 # Node
 node_modules/
 app/node_modules/
