@@ -126,6 +126,34 @@ body {
 .chip input {
   margin: 0;
 }
+.dot.sm {
+  width: 9px;
+  height: 9px;
+}
+
+/* intro overlay */
+.modal.intro {
+  width: min(520px, 100%);
+}
+.modal.intro h2 {
+  font-size: 1.4rem;
+}
+.intro-cta {
+  text-align: right;
+  margin-top: 16px;
+}
+.primary {
+  background: #15356b;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 18px;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+.primary:hover {
+  background: #1c4488;
+}
 
 /* about / caveats modal */
 .modal-backdrop {
@@ -246,6 +274,41 @@ body {
   font-size: 0.8rem;
   line-height: 1.4;
   color: #444;
+}
+
+/* responsive / mobile */
+@media (max-width: 640px) {
+  .leftstack {
+    width: auto;
+    left: 8px;
+    right: 8px;
+    top: 8px;
+    max-height: 46%;
+  }
+  .card {
+    width: auto;
+    left: 8px;
+    right: 8px;
+    top: auto;
+    bottom: 84px;
+    max-height: 46%;
+  }
+  .timeline {
+    width: calc(100% - 16px);
+    bottom: 8px;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .timeline .tldate {
+    min-width: 88px;
+    font-size: 0.76rem;
+  }
+  .cai-banner {
+    width: calc(100% - 16px);
+  }
+  .attribution {
+    display: none; /* attribution remains in the About panel */
+  }
 }
 .header p {
   margin: 0;
