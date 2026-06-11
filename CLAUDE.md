@@ -84,17 +84,17 @@ Deltas from the brief, and decisions:
 
 - Runtime: Node (portable install on PATH; no Python). Pipeline scripts are ESM
   `.mjs`. npm scripts in `data-pipeline/`: `inspect`, `clean`, `geocode`, `test`.
-- Done: Phase 0 (scaffold), Phase 1 (inspect), Phase 2 (clean), Phase 3
-  (geocode), Phase 4 (map), Phase 5 (timeline), Phase 6 (filters + caveats),
-  Phase 7 (curated deep dives + CAI overlay; data in app/src/data/, committed).
+- Done: ALL phases 0–8 (scaffold, inspect, clean, geocode, map, timeline,
+  filters + caveats, curated deep dives + CAI overlay, polish). Curated data in
+  app/src/data/ is committed; derived data artefacts stay gitignored.
 - Geocoder needs `data-pipeline/gazetteer/GB.txt` (GeoNames GB dump, CC BY 4.0,
   gitignored). 95.2% of rows resolved; unmatched/Channel Islands go to
   out/unresolved.json, never guessed. Geocode confidence: high/medium/low.
 - App: React + MapLibre GL + CARTO Positron basemap (no API key). `05_build.mjs`
   emits app/public/raids.geojson (gitignored). Run locally: `npm run dev` in
   app/ (or the Preview launch config). No public deploy until licence resolved.
-- Next: Phase 8 (polish: loading/empty states, mobile layout, intro overlay,
-  README write-up). Licence still unresolved -> still no public deploy.
+- Open: resolve dataset licence before any public deploy; optionally email the
+  project for reuse permission. Future ideas: optimise the 13 MB geojson.
 
 ## Licensing (resolve before rehosting the raw file)
 
@@ -158,34 +158,15 @@ Static single-page app plus an offline data pipeline. No backend.
 - IDs: stable synthetic id per row for linking deep-dives/overlay to rows.
 - Provenance: keep HO 203 volume/report numbers if present.
 
-## Phased build plan
+## Build plan — ALL PHASES COMPLETE (0–8)
 
-Each phase ends at a natural git commit. Run `git init` in phase 0.
-
-- Phase 0 Scaffold: `git init`, repo structure, README stub, empty React app that
-  builds and deploys a hello-world to Netlify early to de-risk hosting.
-- Phase 1 Get and understand the data: download dataset to `raw/`, write
-  `01_inspect` to print columns, row count, distinct attack-type strings, vague
-  casualty cells, "Unspecified" markers, Notes patterns, late-war rows. Produce
-  `DATA_NOTES.md`. Do not proceed until the real CSV shape is understood; the
-  methodology above is a description, not a guarantee of the layout.
-- Phase 2 Clean and normalise: write `02_clean` per the cleaning spec; emit tidy
-  intermediate records; add assertions/tests.
-- Phase 3 Geocode: write `03_geocode`, handle London boroughs, output
-  `unresolved.json` for failures plus the 190 unconfirmed. Spot-check by hand.
-- Phase 4 Map + points (no time yet): static map of all geocoded points,
-  sized/coloured by casualties, click-for-detail. Get performance right here.
-  Commit and deploy.
-- Phase 5 Timeline: scrubber + play/pause, points appear/fade by date, precompute
-  the bucketed index. Commit and deploy.
-- Phase 6 Layers + caveats panel: attack-type toggles; about/limitations panel
-  (V-2 under-recording, 190 unconfirmed, vague casualties, attribution).
-- Phase 7 Curated content: author `deep-dives.json` (Coventry, Swansea, Belfast,
-  Clydebank, Liverpool May Blitz, Hull, Plymouth, Bristol, London) and
-  `cai-overlay.json`. Wire up the deep-dive panel and Italy overlay toggle.
-  Commit and deploy.
-- Phase 8 Polish: empty/loading states, mobile layout, intro overlay stating the
-  "not just London" thesis, final attribution, written-up README.
+Phases 0–8 are done and committed: scaffold, inspect, clean, geocode, map,
+timeline, filters + caveats, curated deep dives + CAI overlay, and polish
+(intro overlay, mobile layout, attacking-force toggle, README). The attacking
+force can be filtered (hide Germany/unattributed to see only the curated Italian
+raids); Vichy France is explained in About (it bombed Gibraltar, not the UK
+mainland). Remaining open item: resolve the dataset licence before any public
+deploy.
 
 ## Attribution block (use in app + README)
 
