@@ -39,10 +39,11 @@ function findRawFile() {
     )
     process.exit(1)
   }
-  if (spreadsheets.length > 0) {
+  if (spreadsheets.length === 1) return path.join(rawDir, spreadsheets[0])
+  if (spreadsheets.length > 1) {
     console.error(
-      `Found a spreadsheet (${spreadsheets.join(', ')}) but this inspector reads ` +
-        `delimited text. Open it and "Save As" CSV into raw/, then re-run.`,
+      `Multiple spreadsheets in raw/: ${spreadsheets.join(', ')}.\n` +
+        `Pass the one you want explicitly: node scripts/01_inspect.mjs raw/<file>`,
     )
     process.exit(1)
   }
@@ -167,13 +168,36 @@ if (!filePath || !fs.existsSync(filePath)) {
   process.exit(1)
 }
 
-const raw = fs.readFileSync(filePath, 'utf8').replace(/^﻿/, '') // strip BOM
-const firstLine = raw.slice(0, raw.indexOf('\n') === -1 ? raw.length : raw.indexOf('\n'))
-const delimiter = detectDelimiter(firstLine)
-const delimName = { ',': 'comma', '\t': 'tab', ';': 'semicolon' }[delimiter]
+let matrix
+let sourceDesc
+const ext = path.extname(filePath).toLowerCase()
 
-const matrix = parseDelimited(raw, delimiter)
-if (matrix.length === 0) {
+if (ext === '.xlsx' || ext === '.xls') {
+  // Excel: Node cannot read xlsx natively, so use SheetJS (data-pipeline tooling
+  // dependency only; never shipped in the app bundle).
+  const mod = await import('xlsx')
+  const XLSX = mod.default ?? mod
+  const wb = XLSX.readFile(filePath, { cellDates: false })
+  // pick the sheet with the most rows (the data sheet)
+  let best = null
+  for (const name of wb.SheetNames) {
+    const ws = wb.Sheets[name]
+    const rows = ws['!ref'] ? XLSX.utils.decode_range(ws['!ref']).e.r + 1 : 0
+    if (!best || rows > best.rows) best = { name, ws, rows }
+  }
+  matrix = XLSX.utils
+    .sheet_to_json(best.ws, { header: 1, raw: false, defval: '' })
+    .map((r) => r.map((c) => (c == null ? '' : String(c))))
+  sourceDesc = `Excel workbook; sheets: [${wb.SheetNames.join(', ')}]; using "${best.name}"`
+} else {
+  const raw = fs.readFileSync(filePath, 'utf8').replace(/^﻿/, '') // strip BOM
+  const firstLine = raw.slice(0, raw.indexOf('\n') === -1 ? raw.length : raw.indexOf('\n'))
+  const delimiter = detectDelimiter(firstLine)
+  sourceDesc = { ',': 'comma-delimited', '\t': 'tab-delimited', ';': 'semicolon-delimited' }[delimiter]
+  matrix = parseDelimited(raw, delimiter)
+}
+
+if (!matrix || matrix.length === 0) {
   console.error('File parsed to zero rows — is it empty?')
   process.exit(1)
 }
@@ -194,7 +218,7 @@ log('## File')
 log('')
 log(`- Path: \`${path.relative(pipelineDir, filePath).replace(/\\/g, '/')}\``)
 log(`- Size: ${(fs.statSync(filePath).size / 1024 / 1024).toFixed(2)} MB`)
-log(`- Delimiter detected: ${delimName}`)
+log(`- Source: ${sourceDesc}`)
 log(`- Column count: ${header.length}`)
 log(`- Data rows (non-blank): ${dataRows.length.toLocaleString('en-GB')}`)
 

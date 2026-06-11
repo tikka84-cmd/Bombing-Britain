@@ -6,5 +6,8 @@
   "description": "Offline data pipeline for the Bombing Britain project (inspect, clean, geocode, build).",
   "scripts": {
     "inspect": "node scripts/01_inspect.mjs"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }
