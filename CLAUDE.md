@@ -85,11 +85,14 @@ Deltas from the brief, and decisions:
 - Runtime: Node (portable install on PATH; no Python). Pipeline scripts are ESM
   `.mjs`. npm scripts in `data-pipeline/`: `inspect`, `clean`, `geocode`, `test`.
 - Done: Phase 0 (scaffold + React app), Phase 1 (inspect), Phase 2 (clean ->
-  out/02_clean.json), Phase 3 (geocode -> out/03_geocoded.json).
+  out/02_clean.json), Phase 3 (geocode -> out/03_geocoded.json), Phase 4 (map).
 - Geocoder needs `data-pipeline/gazetteer/GB.txt` (GeoNames GB dump, CC BY 4.0,
   gitignored). 95.2% of rows resolved; unmatched/Channel Islands go to
   out/unresolved.json, never guessed. Geocode confidence: high/medium/low.
-- Next: Phase 4 (static map + points, performance via canvas/WebGL or clustering).
+- App: React + MapLibre GL + CARTO Positron basemap (no API key). `05_build.mjs`
+  emits app/public/raids.geojson (gitignored). Run locally: `npm run dev` in
+  app/ (or the Preview launch config). No public deploy until licence resolved.
+- Next: Phase 5 (timeline scrubber + play/pause; precompute a bucketed index).
 
 ## Licensing (resolve before rehosting the raw file)
 
