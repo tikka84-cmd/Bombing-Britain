@@ -85,14 +85,14 @@ Deltas from the brief, and decisions:
 - Runtime: Node (portable install on PATH; no Python). Pipeline scripts are ESM
   `.mjs`. npm scripts in `data-pipeline/`: `inspect`, `clean`, `geocode`, `test`.
 - Done: Phase 0 (scaffold), Phase 1 (inspect), Phase 2 (clean), Phase 3
-  (geocode), Phase 4 (map), Phase 5 (timeline scrubber + play/pause).
+  (geocode), Phase 4 (map), Phase 5 (timeline), Phase 6 (filters + caveats).
 - Geocoder needs `data-pipeline/gazetteer/GB.txt` (GeoNames GB dump, CC BY 4.0,
   gitignored). 95.2% of rows resolved; unmatched/Channel Islands go to
   out/unresolved.json, never guessed. Geocode confidence: high/medium/low.
 - App: React + MapLibre GL + CARTO Positron basemap (no API key). `05_build.mjs`
   emits app/public/raids.geojson (gitignored). Run locally: `npm run dev` in
   app/ (or the Preview launch config). No public deploy until licence resolved.
-- Next: Phase 6 (attack-type/region layer toggles + the data caveats panel).
+- Next: Phase 7 (curated deep-dive cards for major raids + the CAI Italy overlay).
 
 ## Licensing (resolve before rehosting the raw file)
 
