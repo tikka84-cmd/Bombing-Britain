@@ -102,12 +102,29 @@ The full list is in the in-app **About & data caveats** panel. In short:
 ## Licence & deployment
 
 The transcribed dataset has no explicit reuse licence, so the raw file and the
-derived artefacts (`out/`, `app/public/raids.geojson`) are gitignored and the app
-is **not deployed publicly**. To publish, first resolve reuse permission with the
-project, then either ship only the transformed derivative with prominent
-attribution or host per whatever licence is granted.
+derived artefacts (`out/`, `app/public/raids.geojson`) are gitignored. To publish,
+first resolve reuse permission with the project, then either ship only the
+transformed derivative with prominent attribution or host per the granted licence.
 
 The curated text in `app/src/data/` is our own writing and is committed.
+
+### Deploying (Netlify)
+
+Static deploy, no backend. `netlify.toml` sets base `app`, build `npm run build`,
+publish `app/dist`. Because the data artefact is gitignored, a **git-connected**
+Netlify build would omit it (the live site would show its error state). Until the
+data can be committed (licence resolved), deploy from a **local build** with the
+CLI, which uploads `app/dist` (data included) without committing it:
+
+```
+npm install -g netlify-cli
+cd app
+npm run build                      # data is already in app/public via 05_build
+netlify deploy --dir=dist          # draft URL to review
+netlify deploy --dir=dist --prod   # production
+```
+
+`netlify login` (interactive, browser) is required once to authenticate.
 
 ## Attribution
 
