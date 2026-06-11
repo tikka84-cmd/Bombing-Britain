@@ -80,6 +80,17 @@ Deltas from the brief, and decisions:
 - No coordinates in the data; geocoding (Phase 3) still required. Country and
   Civil Defence Region help. Link to Page = the paywalled HO 203 page links.
 
+## Pipeline progress and setup (update as phases land)
+
+- Runtime: Node (portable install on PATH; no Python). Pipeline scripts are ESM
+  `.mjs`. npm scripts in `data-pipeline/`: `inspect`, `clean`, `geocode`, `test`.
+- Done: Phase 0 (scaffold + React app), Phase 1 (inspect), Phase 2 (clean ->
+  out/02_clean.json), Phase 3 (geocode -> out/03_geocoded.json).
+- Geocoder needs `data-pipeline/gazetteer/GB.txt` (GeoNames GB dump, CC BY 4.0,
+  gitignored). 95.2% of rows resolved; unmatched/Channel Islands go to
+  out/unresolved.json, never guessed. Geocode confidence: high/medium/low.
+- Next: Phase 4 (static map + points, performance via canvas/WebGL or clustering).
+
 ## Licensing (resolve before rehosting the raw file)
 
 The transcribed dataset is a derivative work; underlying HO 203 records are Crown
