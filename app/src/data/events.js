@@ -33,6 +33,15 @@ const events = [
       'After a devastating raid on London on the night of 10–11 May 1941, the main Blitz ended. The Luftwaffe was redeployed east for the invasion of the Soviet Union that June, and raids on Britain thin sharply from this point.',
   },
   {
+    id: 'baby-blitz',
+    kind: 'phase',
+    from: '1944-01-21',
+    to: '1944-05-29',
+    title: 'The "Baby Blitz"',
+    blurb:
+      'Operation Steinbock, 21 January to 29 May 1944: the Luftwaffe\'s last sustained bomber offensive against Britain, mostly night raids on London and the south, partly in reprisal for the Allied bombing of Germany. It cost the Luftwaffe heavily and achieved little, leaving it badly weakened before D-Day.',
+  },
+  {
     id: 'first-v1',
     kind: 'moment',
     date: '1944-06-13',
