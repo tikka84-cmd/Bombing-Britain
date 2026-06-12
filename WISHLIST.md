@@ -68,8 +68,11 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
   (10-11 May 1941), first V-1 (13 Jun 1944, Bow), first V-2 (8 Sep 1944, Chiswick).
   V-1/V-2 cards have a "Show on map" fly-to. Deadliest raid deliberately left to
   the deep-dive cards (data can't give an honest single "deadliest").
-- [ ] (optional, later) Baby Blitz (Steinbock, early 1944) phase band — deferred;
-  add if it looks worthwhile.
+- [x] Expanded to 9 events: added Baby Blitz (Steinbock, Jan–May 1944), the first
+  raids (Firth of Forth, 16 Oct 1939), the Baedeker raids (Apr–Jun 1942 band) and
+  the last rocket (Orpington, 27 Mar 1945). Well spread across 1939–1945.
+- Decision: major-raid city markers stay OFF the timeline (would crowd 1940–41 and
+  duplicate the map markers); timeline = campaign turning points, map = places.
 - Also fixed: responsive @media block now sits last so cards stop overlapping the
   controls at narrow widths.
 
