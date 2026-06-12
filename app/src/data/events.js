@@ -8,6 +8,17 @@
 
 const events = [
   {
+    id: 'first-raids',
+    kind: 'moment',
+    date: '1939-10-16',
+    title: 'The first raids',
+    blurb:
+      'On 16 October 1939, six weeks into the war, twelve Junkers Ju 88s attacked Royal Navy warships in the Firth of Forth — the first German air raid on Britain. The opening months brought only scattered attacks on naval and coastal targets, which is why the map stays nearly empty until the summer of 1940.',
+    lat: 56.0,
+    lon: -3.38,
+    place: 'the Firth of Forth, near Edinburgh',
+  },
+  {
     id: 'battle-of-britain',
     kind: 'phase',
     from: '1940-07-10',
@@ -31,6 +42,15 @@ const events = [
     title: 'The Blitz eases',
     blurb:
       'After a devastating raid on London on the night of 10–11 May 1941, the main Blitz ended. The Luftwaffe was redeployed east for the invasion of the Soviet Union that June, and raids on Britain thin sharply from this point.',
+  },
+  {
+    id: 'baedeker',
+    kind: 'phase',
+    from: '1942-04-23',
+    to: '1942-06-06',
+    title: 'The Baedeker raids',
+    blurb:
+      'From 23 April 1942, in reprisal for the RAF\'s bombing of Lübeck, the Luftwaffe attacked historic English cities chosen for their cultural value — said to be picked from the three-star sights in the Baedeker tourist guide: Exeter, Bath, Norwich, York and others. It explains the 1942 cluster of raids on cathedral cities away from the usual industrial targets.',
   },
   {
     id: 'baby-blitz',
@@ -62,6 +82,17 @@ const events = [
     lat: 51.4916,
     lon: -0.2645,
     place: 'Staveley Road, Chiswick, London',
+  },
+  {
+    id: 'last-rocket',
+    kind: 'moment',
+    date: '1945-03-27',
+    title: 'The last rocket',
+    blurb:
+      'On 27 March 1945 one of the last two V-2 rockets fired at Britain struck Orpington, killing Ivy Millichamp, 34 — the last civilian killed by enemy action in Britain during the war. Within weeks the launch sites were overrun and the bombing ended. (Bear in mind this late-war period is badly under-recorded in the data.)',
+    lat: 51.358,
+    lon: 0.099,
+    place: 'Orpington, Kent',
   },
 ]
 
