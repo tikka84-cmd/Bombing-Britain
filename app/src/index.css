@@ -441,11 +441,11 @@ body {
   left: 50%;
   transform: translateX(-50%);
   z-index: 6;
-  width: min(640px, calc(100% - 28px));
+  width: min(780px, calc(100% - 28px));
   padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .timeline .play {
   flex: none;
@@ -474,4 +474,37 @@ body {
   font-variant-numeric: tabular-nums;
   font-size: 0.86rem;
   font-weight: 600;
+}
+.timeline .tlbtn {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.6rem;
+  color: var(--ink);
+}
+.timeline .tlbtn:hover {
+  background: #f3f4f6;
+}
+.timeline .speed {
+  flex: none;
+  display: flex;
+  gap: 3px;
+}
+.timeline .speedbtn {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 6px;
+  padding: 3px 7px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+.timeline .speedbtn.on {
+  background: #eaf1fb;
+  border-color: #9bbef0;
+  color: var(--ink);
 }

@@ -5,19 +5,22 @@
 // cannot be filtered out of the main dataset. This overlay is therefore curated
 // from histories of the CAI, and the match to individual dataset rows is
 // approximate. This is our own writing.
+//
+// `date` (ISO) drives the timeline so a marker only appears once its raid has
+// happened. Where a raid spans several nights, the date is the first night.
 
 export const caiIntro =
-  'Most people do not know that Italy bombed Britain. From October 1940 the ' +
-  'Corpo Aereo Italiano flew against the Essex, Suffolk and Kent coast from bases ' +
-  'in Belgium, in Fiat BR.20 bombers escorted by Fiat CR.42 and G.50 fighters. ' +
-  'The campaign was small and short-lived — the CAI was badly mauled by Hurricanes ' +
-  'over Harwich on 11 November 1940 — and ended in early 1941. These ground ' +
-  'reports did not record the attacker as Italian, so the points below are curated, ' +
-  'and their match to individual records is approximate.'
+  'From October 1940 the Corpo Aereo Italiano flew against the Essex, Suffolk and ' +
+  'Kent coast from bases in Belgium, in Fiat BR.20 bombers escorted by Fiat CR.42 ' +
+  'and G.50 fighters. The campaign was small and short-lived — the CAI was badly ' +
+  'mauled by Hurricanes over Harwich on 11 November 1940 — and ended in early 1941. ' +
+  'These ground reports did not record the attacker as Italian, so the points here ' +
+  'are curated, and their match to individual records is approximate.'
 
 const caiRaids = [
   {
     id: 'cai-1940-10-24',
+    date: '1940-10-24',
     dateLabel: '24 October 1940 (night)',
     place: 'Felixstowe & Harwich',
     lat: 51.95,
@@ -27,6 +30,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-10-29',
+    date: '1940-10-29',
     dateLabel: '29 October 1940 (daylight)',
     place: 'Ramsgate / Deal',
     lat: 51.33,
@@ -36,6 +40,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-11-01',
+    date: '1940-11-01',
     dateLabel: '1 November 1940',
     place: 'Canterbury area',
     lat: 51.28,
@@ -45,6 +50,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-11-05',
+    date: '1940-11-05',
     dateLabel: '5 November 1940 (night)',
     place: 'Harwich & Ipswich',
     lat: 52.0,
@@ -54,6 +60,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-11-11',
+    date: '1940-11-11',
     dateLabel: '11 November 1940 (daylight)',
     place: 'Harwich',
     lat: 51.9426,
@@ -63,6 +70,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-12-05',
+    date: '1940-12-05',
     dateLabel: '5 December 1940 (night)',
     place: 'Ipswich',
     lat: 52.0567,
@@ -72,6 +80,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1940-12-x',
+    date: '1940-12-13',
     dateLabel: '13 / 21 / 22 December 1940 (nights)',
     place: 'Harwich',
     lat: 51.9426,
@@ -81,6 +90,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1941-01-02',
+    date: '1941-01-02',
     dateLabel: '2 January 1941 (night)',
     place: 'Harwich',
     lat: 51.9426,
@@ -90,6 +100,7 @@ const caiRaids = [
   },
   {
     id: 'cai-1941-02',
+    date: '1941-02-07',
     dateLabel: 'to ~7 February 1941 (nights)',
     place: 'Felixstowe / Lowestoft / Ipswich / Harwich',
     lat: 52.2,

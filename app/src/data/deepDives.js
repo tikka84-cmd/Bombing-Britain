@@ -44,7 +44,7 @@ const deepDives = [
     ],
     body: [
       'London was bombed on 57 consecutive nights from 7 September 1940 and repeatedly until May 1941. The docks and East End were hit hardest, but damage was city-wide. Note that in this dataset many London casualty figures are city-wide totals, not per-borough.',
-      'The capital dominates any map of the bombing — but it was far from alone, which is the whole point of this project.',
+      'London bore by far the largest number of recorded attacks of anywhere in the country.',
     ],
     sources: ['Standard histories of the London Blitz; Imperial War Museum.'],
   },
@@ -86,7 +86,7 @@ const deepDives = [
     ],
     body: [
       'Clydebank, a small shipbuilding town on the Clyde, was hit on two consecutive nights in March 1941. The destruction of housing was almost total: the population fell from around 50,000 to a few thousand as survivors fled.',
-      'It remains one of the most concentrated instances of destruction of any British town in the war, and is far from the South East the bombing is popularly associated with.',
+      'It remains one of the most concentrated instances of destruction suffered by any British town in the war.',
     ],
     sources: ['Standard histories of the Clydebank Blitz.'],
   },
@@ -127,7 +127,6 @@ const deepDives = [
     ],
     body: [
       'Over three nights in February 1941 the Luftwaffe destroyed the commercial heart of Swansea. The town centre was largely flattened and burned, and the raids are remembered locally simply as the "Three Nights\' Blitz".',
-      'Swansea is a reminder that Wales, too, was a front line of the bombing war.',
     ],
     sources: ['Standard histories of the Swansea Three Nights\' Blitz.'],
   },
@@ -185,7 +184,7 @@ const deepDives = [
     ],
     body: [
       'Hull was bombed throughout the war and suffered proportionally enormous damage, yet wartime reports usually called it only "a north-east coast town". A large majority of its houses were damaged at some point.',
-      'Its obscurity in the popular memory of the Blitz is exactly the imbalance this map sets out to correct.',
+      'Even so, it is rarely named among the cities most associated with the Blitz.',
     ],
     sources: ['Standard histories of the Hull Blitz.'],
   },
