@@ -78,6 +78,17 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 - Also fixed: responsive @media block now sits last so cards stop overlapping the
   controls at narrow widths.
 
+## Pre-publish polish — DONE
+
+- [x] Code health: ESLint clean, app `npm audit` 0 vulnerabilities, build healthy
+  (JS gzip ~347 KB). Main payload is raids.geojson (~13 MB, served compressed).
+- [x] Dark theme (dark basemap + dark panels + serif title) — isolated commit.
+- [x] Detail cards: combined/area-total flag + "Look this up" web-search link.
+- [x] Reset-all button; Italian raids on by default and made subtler.
+- [x] Sharing meta tags (OG/Twitter) + theme-color; on-theme favicon.
+- [x] Esc / click-empty-map to close cards; filters collapse on mobile.
+- [x] Geocode overrides table (Newcastle -> upon Tyne); extensible.
+
 ## Decisions / caveats to keep us honest
 
 - Casualty totals are approximate by necessity; vague and "unspecified" values are
