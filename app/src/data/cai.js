@@ -21,6 +21,7 @@ const caiRaids = [
   {
     id: 'cai-1940-10-24',
     date: '1940-10-24',
+    period: 'night',
     dateLabel: '24 October 1940 (night)',
     place: 'Felixstowe & Harwich',
     lat: 51.95,
@@ -31,6 +32,7 @@ const caiRaids = [
   {
     id: 'cai-1940-10-29',
     date: '1940-10-29',
+    period: 'day',
     dateLabel: '29 October 1940 (daylight)',
     place: 'Ramsgate / Deal',
     lat: 51.33,
@@ -41,16 +43,18 @@ const caiRaids = [
   {
     id: 'cai-1940-11-01',
     date: '1940-11-01',
-    dateLabel: '1 November 1940',
+    period: 'day',
+    dateLabel: '1 November 1940 (daylight)',
     place: 'Canterbury area',
     lat: 51.28,
     lon: 1.08,
     kind: 'Fighter sweep (no bombing)',
-    description: 'A fighter sweep over the Canterbury area by CR.42 and G.50 fighters; no bombing.',
+    description: 'A daylight fighter sweep over the Canterbury area by CR.42 and G.50 fighters; no bombing.',
   },
   {
     id: 'cai-1940-11-05',
     date: '1940-11-05',
+    period: 'night',
     dateLabel: '5 November 1940 (night)',
     place: 'Harwich & Ipswich',
     lat: 52.0,
@@ -61,6 +65,7 @@ const caiRaids = [
   {
     id: 'cai-1940-11-11',
     date: '1940-11-11',
+    period: 'day',
     dateLabel: '11 November 1940 (daylight)',
     place: 'Harwich',
     lat: 51.9426,
@@ -71,6 +76,7 @@ const caiRaids = [
   {
     id: 'cai-1940-12-05',
     date: '1940-12-05',
+    period: 'night',
     dateLabel: '5 December 1940 (night)',
     place: 'Ipswich',
     lat: 52.0567,
@@ -81,6 +87,7 @@ const caiRaids = [
   {
     id: 'cai-1940-12-x',
     date: '1940-12-13',
+    period: 'night',
     dateLabel: '13 / 21 / 22 December 1940 (nights)',
     place: 'Harwich',
     lat: 51.9426,
@@ -91,6 +98,7 @@ const caiRaids = [
   {
     id: 'cai-1941-01-02',
     date: '1941-01-02',
+    period: 'night',
     dateLabel: '2 January 1941 (night)',
     place: 'Harwich',
     lat: 51.9426,
@@ -101,6 +109,7 @@ const caiRaids = [
   {
     id: 'cai-1941-02',
     date: '1941-02-07',
+    period: 'night',
     dateLabel: 'to ~7 February 1941 (nights)',
     place: 'Felixstowe / Lowestoft / Ipswich / Harwich',
     lat: 52.2,
