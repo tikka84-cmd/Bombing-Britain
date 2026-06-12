@@ -33,6 +33,12 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
   filter to the worst events (200+ -> 167 records clustered on the major cities).
   Hint notes that some high-band entries are area/running totals; London city-wide
   figures show as "not usable".
+- [x] 7c. Custom date range: From/To date pickers (down to a single day, e.g.
+  14 Nov 1940 -> 102 attacks), with the year buttons as shortcuts. Renamed the
+  control "Date range".
+- [x] 7d. Italian raids now obey the casualty filter (sit in the "No figure"
+  band); empty-state caption only when nothing matches on any date; major-raid
+  markers off by default; count denominator excludes the 2 undated records.
 - [ ] (optional, deferred) "recent only" rolling-window mode for watching waves.
 
 ## Batch 5 — data accuracy & honesty
