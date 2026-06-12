@@ -131,6 +131,28 @@ body {
   height: 9px;
 }
 
+/* custom date range pickers */
+.daterange {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.daterange label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.daterange input[type='date'] {
+  font-size: 0.78rem;
+  padding: 2px 4px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+}
+
 /* intro overlay */
 .modal.intro {
   width: min(520px, 100%);
