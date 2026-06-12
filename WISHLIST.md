@@ -59,21 +59,19 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 - Play speeds retuned slower (Slow ~4 min, Normal ~2.5 min, Fast ~75s full run),
   one day per tick.
 
-## Batch 4 — narrated timeline events (biggest piece)
+## Batch 4 — narrated timeline events — DONE
 
-- [ ] 8. Curated key moments marked on the timeline and shown as a card that
-  pauses playback (with a Continue button); markers also clickable any time.
-  Proposed events (each date/fact to be verified before use):
-  - Start of the Blitz (7 Sep 1940)
-  - Battle of Britain / Kanalkampf, and the shift from daylight coastal raids to
-    night bombing of London
-  - First Italian (CAI) raid (24–25 Oct 1940)
-  - First V-1 (reported 13 Jun 1944, Grove Road, Bow, London) — link to a map dot
-  - First V-2 (reported 8 Sep 1944, Chiswick, London) — link to a map dot
-  - Deadliest raid in the data (to be computed, with care over London totals)
-  - Open to more suggestions
-- [ ] (mine) "Guided mode" toggle so the pause-on-event narration can be switched
-  off on replays.
+- [x] 8. Implemented as clickable timeline flags + one shaded phase band (NOT a
+  forced pause, per discussion): a caption flashes for ~5s as the playhead passes,
+  and you can click a flag any time to read the card. Five verified turning points:
+  Battle of Britain (phase band), the Blitz begins (7 Sep 1940), the Blitz eases
+  (10-11 May 1941), first V-1 (13 Jun 1944, Bow), first V-2 (8 Sep 1944, Chiswick).
+  V-1/V-2 cards have a "Show on map" fly-to. Deadliest raid deliberately left to
+  the deep-dive cards (data can't give an honest single "deadliest").
+- [ ] (optional, later) Baby Blitz (Steinbock, early 1944) phase band — deferred;
+  add if it looks worthwhile.
+- Also fixed: responsive @media block now sits last so cards stop overlapping the
+  controls at narrow widths.
 
 ## Decisions / caveats to keep us honest
 
