@@ -39,7 +39,9 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 - [x] 7d. Italian raids now obey the casualty filter (sit in the "No figure"
   band); empty-state caption only when nothing matches on any date; major-raid
   markers off by default; count denominator excludes the 2 undated records.
-- [ ] (optional, deferred) "recent only" rolling-window mode for watching waves.
+- [x] 7e. "Recent only" rolling-window mode (toggle, default off): shows only the
+  previous ~30 days of attacks, fading out, to watch waves move. Count switches to
+  "N attacks in the ~30 days to this date" in this mode.
 
 ## Batch 5 — data accuracy & honesty
 
