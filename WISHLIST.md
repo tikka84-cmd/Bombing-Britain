@@ -17,20 +17,13 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 - [x] 5. Vichy France note removed.
 - [x] (mine) Dropped "and Italian" from the header; About stays accurate.
 
-## Batch 2 — running casualty counter — BLOCKED (data can't support it honestly)
+## Batch 2 — running casualty counter — DONE (resolved honestly)
 
-- [!] 6. Tried a live killed/injured tally. The dataset CANNOT be summed into a
-  credible total: the "entire London" rows repeat the running city-wide total
-  across 4,435 reports (495,650 "killed"), and other cities do the same (e.g.
-  Liverpool's 1,232 deaths appear on 7 consecutive rows). Naive sum = ~540,000
-  killed vs the true ~60,000–70,000. Reverted the live tally.
-  Honest alternatives to choose from:
-  (a) No derived total; keep per-event figures in the detail card, and add the
-      accepted historical estimate (~60–70k UK civilian deaths; ~43k in the
-      1940–41 Blitz) as a sourced, static line in About. [recommended]
-  (b) A ticking counter that excludes area-wide running totals — but it would
-      undercount badly (loses London/Liverpool), still misleading.
-  (c) Drop the idea.
+- [x] 6. A live total can't be done honestly (the data repeats running/area
+  totals; naive sum ~540k vs true ~60–70k). Resolved via option (a): no derived
+  total; per-record figures stay in the detail card, and About now carries the
+  sourced historical scale (~43k Blitz deaths; ~60–70k across the war; ~9k from
+  V-weapons) with an explanation of why the figures aren't summed.
 
 ## Batch 3 — focus the view (time + severity)
 
@@ -47,12 +40,10 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 - [ ] Geocoding: handle "Place, Qualifier" names (e.g. "Garston, Watford") by
   anchoring on the qualifier so the right one is chosen. Currently "Garston,
   Watford" lands on the Liverpool Garston (in the Mersey). Re-run pipeline after.
-- [ ] Non-raid incidents: the source logged civil-defence incidents, so a few
-  entries are not German air raids — notably the Freckleton air disaster (24 Aug
-  1944, a US aircraft crashed into a school; 57 killed in the data). These are not
-  flagged in the source. Plan: add an honest caveat in About, and consider a
-  curated annotation on the Freckleton point so the map doesn't imply it was a
-  German raid. Display the data faithfully; do not silently delete.
+- [x] Non-raid incidents: DONE. About now caveats that a few entries are not
+  enemy action; the Freckleton point's detail card carries a curated note
+  explaining it was a US aircraft accident, not a German raid. Data shown
+  faithfully (not deleted). Mechanism (INCIDENT_NOTES) is reusable if we find more.
 - [ ] NB for Batch 4: the "deadliest" single row may be Freckleton (an accident)
   or a London city-wide total — so do not blindly label it the "deadliest raid".
 
