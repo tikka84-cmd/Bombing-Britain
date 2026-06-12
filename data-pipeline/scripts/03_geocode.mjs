@@ -279,6 +279,23 @@ export function geocodePlace(gaz, name, country, isLondonRegion) {
   }
 }
 
+// --- manual overrides ------------------------------------------------------
+// For ambiguous place names the gazetteer resolves wrongly. Keyed on the place
+// plus (optionally) an exact Civil Defence Region and/or country, so only the
+// intended rows are redirected. Extend as errors are spotted.
+const OVERRIDES = [
+  // "Newcastle" in the Northern region is Newcastle upon Tyne, not under-Lyme.
+  { loc: 'Newcastle', region: 'Northern', lat: 54.9783, lon: -1.6178, name: 'Newcastle upon Tyne' },
+]
+function overrideFor(r) {
+  return OVERRIDES.find(
+    (o) =>
+      normName(o.loc) === normName(r.location) &&
+      (!o.region || (r.region && r.region.name === o.region)) &&
+      (!o.country || o.country === r.country),
+  )
+}
+
 // --- main ------------------------------------------------------------------
 
 function main() {
@@ -303,6 +320,15 @@ function main() {
   const unresolved = new Map() // "name|country" -> count
 
   for (const r of records) {
+    const ov = overrideFor(r)
+    if (ov) {
+      r.lat = ov.lat
+      r.lon = ov.lon
+      r.geocode = { matchedName: ov.name, method: 'override', confidence: 'high', fcode: null }
+      resolved++
+      methodCounts.set('override', (methodCounts.get('override') || 0) + 1)
+      continue
+    }
     const isLondonRegion = r.region && r.region.name === 'London'
     const key = `${r.location}|${r.country}|${isLondonRegion ? 'L' : ''}`
     let g
