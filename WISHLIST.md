@@ -25,15 +25,15 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
   sourced historical scale (~43k Blitz deaths; ~60–70k across the war; ~9k from
   V-weapons) with an explanation of why the figures aren't summed.
 
-## Batch 3 — focus the view (time + severity)
+## Batch 3 — focus the view (time + severity) — DONE
 
-- [ ] 7. Year focus (All / 1939 … 1945) so the map shows only the chosen year and
-  isn't clogged by earlier years. Optional "recent only" rolling-window mode to
-  watch waves arrive (e.g. V-weapons in 1944).
-- [ ] 7b. Casualty-band filter (matching the legend: none / 1–9 / 10–49 / 50–199 /
-  200+ / figure not usable) so you can show only the worst events and see where
-  they cluster. Caveat: London/region-wide figures attached to a single row will
-  appear in the high bands — note this in the filter.
+- [x] 7. Year focus (All / 1939 … 1945): the map shows only the chosen year and the
+  timeline shrinks to it (verified: 1944 -> 7,500 attacks, Jan–Dec 1944).
+- [x] 7b. Casualty-band filter (None / 1–9 / 10–49 / 50–199 / 200+ / Not usable):
+  filter to the worst events (200+ -> 167 records clustered on the major cities).
+  Hint notes that some high-band entries are area/running totals; London city-wide
+  figures show as "not usable".
+- [ ] (optional, deferred) "recent only" rolling-window mode for watching waves.
 
 ## Batch 5 — data accuracy & honesty
 
