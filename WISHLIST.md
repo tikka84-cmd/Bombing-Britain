@@ -24,11 +24,20 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
   added); London city-wide figures need careful handling to avoid double-counting.
   Will be labelled as approximate / "at least".
 
-## Batch 3 — focus the view by time
+## Batch 3 — focus the view (time + severity)
 
 - [ ] 7. Year focus (All / 1939 … 1945) so the map shows only the chosen year and
   isn't clogged by earlier years. Optional "recent only" rolling-window mode to
   watch waves arrive (e.g. V-weapons in 1944).
+- [ ] 7b. Casualty-band filter (matching the legend: none / 1–9 / 10–49 / 50–199 /
+  200+ / figure not usable) so you can show only the worst events and see where
+  they cluster. Caveat: London/region-wide figures attached to a single row will
+  appear in the high bands — note this in the filter.
+
+## Tuning notes
+
+- Play speeds retuned slower (Slow ~4 min, Normal ~2.5 min, Fast ~75s full run),
+  one day per tick.
 
 ## Batch 4 — narrated timeline events (biggest piece)
 
