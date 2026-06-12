@@ -110,6 +110,22 @@ body {
   letter-spacing: 0.4px;
   color: var(--muted);
 }
+.controls-toggle {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.controls-toggle .chev {
+  font-size: 0.7rem;
+}
 .reset-btn {
   border: 1px solid var(--line);
   background: var(--control-bg);
