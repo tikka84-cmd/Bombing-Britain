@@ -37,9 +37,10 @@ Plain-English list of improvements. Status: [ ] planned · [~] in progress · [x
 
 ## Batch 5 — data accuracy & honesty
 
-- [ ] Geocoding: handle "Place, Qualifier" names (e.g. "Garston, Watford") by
-  anchoring on the qualifier so the right one is chosen. Currently "Garston,
-  Watford" lands on the Liverpool Garston (in the Mersey). Re-run pipeline after.
+- [x] Geocoding: "Place, Qualifier" names now anchor on the qualifier and pick the
+  nearest namesake (Garston, Watford -> Hertfordshire, not the Mersey). If the
+  nearest namesake is far from a town qualifier, it falls back to the town itself
+  (low confidence), so e.g. "Langley, Norwich" sits at Norwich, not 100km away.
 - [x] Non-raid incidents: DONE. About now caveats that a few entries are not
   enemy action; the Freckleton point's detail card carries a curated note
   explaining it was a US aircraft accident, not a German raid. Data shown

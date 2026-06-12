@@ -156,6 +156,18 @@ function lookup(gaz, name) {
   return null
 }
 
+// great-circle distance in km
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371
+  const toRad = (d) => (d * Math.PI) / 180
+  const dLat = toRad(lat2 - lat1)
+  const dLon = toRad(lon2 - lon1)
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2
+  return 2 * R * Math.asin(Math.sqrt(a))
+}
+
 // --- geocode one place -----------------------------------------------------
 
 export function geocodePlace(gaz, name, country, isLondonRegion) {
@@ -163,6 +175,68 @@ export function geocodePlace(gaz, name, country, isLondonRegion) {
 
   // known non-GB country (Channel Islands): the GB gazetteer cannot place it
   if (country && !admin1) return null
+
+  // "Place, Qualifier" (e.g. "Garston, Watford"): if the first part is ambiguous,
+  // anchor on the qualifier and pick the candidate nearest to it.
+  const segs = name.split(',').map((s) => s.trim()).filter(Boolean)
+  if (segs.length >= 2) {
+    let cands = gaz.primary.get(normName(segs[0])) || []
+    if (admin1) {
+      const m = cands.filter((c) => c.admin1 === admin1)
+      if (m.length) cands = m
+    }
+    if (cands.length > 1) {
+      const anchor = geocodePlace(gaz, segs.slice(1).join(', '), country, false)
+      if (anchor) {
+        let best = null
+        let bestD = Infinity
+        for (const c of cands) {
+          const d = haversine(c.lat, c.lon, anchor.lat, anchor.lon)
+          if (d < bestD) {
+            bestD = d
+            best = c
+          }
+        }
+        if (best) {
+          if (bestD <= 40) {
+            return {
+              lat: best.lat,
+              lon: best.lon,
+              matchedName: best.name,
+              fcode: best.fcode,
+              admin1: best.admin1,
+              method: 'anchor',
+              confidence: 'high',
+            }
+          }
+          // nearest same-named place is far from the qualifier (the real one is
+          // probably not in the gazetteer). If the qualifier is itself a town,
+          // place at the town rather than a distant namesake.
+          if (/^PPL/.test(anchor.fcode || '')) {
+            return {
+              lat: anchor.lat,
+              lon: anchor.lon,
+              matchedName: anchor.matchedName,
+              fcode: anchor.fcode,
+              admin1: anchor.admin1,
+              method: 'anchor-town',
+              confidence: 'low',
+            }
+          }
+          // qualifier is a region/county: keep the nearest namesake, medium.
+          return {
+            lat: best.lat,
+            lon: best.lon,
+            matchedName: best.name,
+            fcode: best.fcode,
+            admin1: best.admin1,
+            method: 'anchor',
+            confidence: 'medium',
+          }
+        }
+      }
+    }
+  }
 
   const found = lookup(gaz, name)
   if (!found) return null
