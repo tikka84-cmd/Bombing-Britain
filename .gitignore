@@ -10,8 +10,8 @@ data-pipeline/out/*
 data-pipeline/gazetteer/*
 !data-pipeline/gazetteer/.gitkeep
 
-# App data artefact (derived dataset) — not published while licence is unresolved
-app/public/raids.geojson
+# App data artefact (transformed derivative) is now committed so Netlify can build
+# from GitHub. Raw dataset + gazetteer remain gitignored; attribution is prominent.
 
 # Node
 node_modules/
