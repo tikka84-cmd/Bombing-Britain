@@ -102,8 +102,13 @@ Deltas from the brief, and decisions:
   names unreadable); don't reintroduce dark mode / serif title without asking.
 - Timeline reveal MUST stay `setFilter` with `['<=', t, cur]` (buildFilter /
   applyFilters in App.jsx). A paint-radius reveal broke rendering and was reverted.
-  The minor "dots trail for a moment after pause (Fast + zoomed out)" is ACCEPTED —
-  if revisited, THROTTLE map updates, do NOT re-architect the reveal.
+- The "dots keep appearing after pause" backlog (bad on mobile) is FIXED by
+  coalescing map updates: at most one setFilter in flight, next one fires on the
+  map's `idle` event (500ms timeout backstop), always to the latest day, so the
+  map self-clocks to the device and never trails. See pumpMapUpdate in App.jsx.
+  Do NOT revert this to per-tick setFilter, and do NOT confuse it with the
+  reverted paint refactor. The live-counter rescan is also throttled to ~4x/s
+  while playing (countDay state) to keep the main thread free.
 - Recent-only is a prominent `All | Recent` toggle in the player; keep `All`
   default (Recent at the end date shows a near-empty map).
 - Italian (CAI): ON by default, subtle green dots, honour all filters (period/type/
