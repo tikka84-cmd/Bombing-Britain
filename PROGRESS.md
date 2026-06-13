@@ -3,25 +3,32 @@
 State of play for resuming. Read alongside CLAUDE.md (project overview, data
 findings, decisions, guardrails). Last updated end of the polish sessions.
 
-## Status: COMPLETE and stable, NOT yet deployed
+## Status: COMPLETE, stable, and DEPLOYED (live)
 
-All phases 0–8 are done and committed, plus several polish rounds. The app builds
-clean, ESLint passes, app `npm audit` is 0 vulnerabilities. It runs locally only —
-nothing is published, because the dataset licence is unresolved (see below).
+All phases 0–8 plus polish rounds are done. Build clean, ESLint clean, app
+`npm audit` 0 vulns. **Live at https://bombing-britain.netlify.app/**
 
-## The single next step
+- Licence: user chose the "transformed derivative + prominent attribution" path
+  for now (share with friends); will email the project for permission only if it
+  warrants wider sharing.
+- Hosting: GitHub repo **github.com/tikka84-cmd/Bombing-Britain** (branch
+  `master`), Netlify connected for **auto-deploy on push**. The built map data
+  (app/public/raids.geojson, ~14 MB) is committed so the Netlify build has it.
+  netlify.toml drives the build (base app, npm run build, publish dist, Node 22).
 
-**Resolve the dataset licence, then deploy.** It's the only thing gating going
-live. Two paths (user's call):
-1. Email the project (Dr Laura Blomvall / History Commons) for reuse permission, or
-2. Accept the "transformed derivative + prominent attribution" path and publish.
+## Updating the live site (the workflow now)
 
-Then deploy. Because `app/public/raids.geojson` is gitignored, a git-connected
-Netlify build would omit the data, so deploy from a LOCAL build via the CLI:
-`cd app && npm run build && netlify deploy --dir=dist --prod` (needs
-`npm i -g netlify-cli` and a one-time `netlify login`). netlify.toml is in place.
-If/when the data may be committed, flip the `.gitignore` line and use git-connected
-auto-deploy instead. I can draft the permission email on request.
+1. I make changes locally and commit (and, if data changed, re-run the pipeline +
+   05_build so app/public/raids.geojson is refreshed and committed).
+2. User clicks **Push origin** in GitHub Desktop.
+3. Netlify auto-builds and redeploys (~1–3 min).
+
+## Possible next steps (optional, not blocking)
+
+- Email the project for reuse permission if it takes off.
+- og:image social preview (drop 1200x630 at app/public/og-image.png, uncomment
+  og:image in index.html).
+- Trim raids.geojson size if first-load feels slow.
 
 ## How to run / rebuild (Windows)
 
