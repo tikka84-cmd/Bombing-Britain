@@ -96,6 +96,26 @@ Deltas from the brief, and decisions:
 - Open: resolve dataset licence before any public deploy; optionally email the
   project for reuse permission. Future ideas: optimise the 13 MB geojson.
 
+## App behaviour & guardrails (decided in polish sessions)
+
+- Visual: LIGHT theme (CARTO Positron). Dark theme was tried and reverted (place
+  names unreadable); don't reintroduce dark mode / serif title without asking.
+- Timeline reveal MUST stay `setFilter` with `['<=', t, cur]` (buildFilter /
+  applyFilters in App.jsx). A paint-radius reveal broke rendering and was reverted.
+  The minor "dots trail for a moment after pause (Fast + zoomed out)" is ACCEPTED —
+  if revisited, THROTTLE map updates, do NOT re-architect the reveal.
+- Recent-only is a prominent `All | Recent` toggle in the player; keep `All`
+  default (Recent at the end date shows a near-empty map).
+- Italian (CAI): ON by default, subtle green dots, honour all filters (period/type/
+  country; band = "No figure"); banner only on manual toggle.
+- Casualties are NEVER summed (data repeats running/area totals); About cites
+  historical figures (~43k Blitz, ~60–70k war, ~9k V-weapons). Cards auto-flag
+  combined/area totals and add a "Look this up" search link.
+- Ambiguous-name geocode fixes -> region-keyed OVERRIDES table in 03_geocode (then
+  re-run geocode + 05_build); non-raid incidents -> INCIDENT_NOTES in App.jsx.
+- Decided NOT to add more curated deep-dive cities. Curated data in app/src/data/
+  is committed; raw/, out/, gazetteer/, app/public/raids.geojson gitignored.
+
 ## Licensing (resolve before rehosting the raw file)
 
 The transcribed dataset is a derivative work; underlying HO 203 records are Crown
