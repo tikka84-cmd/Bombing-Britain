@@ -1,16 +1,8 @@
 # Netlify configuration for the static React app.
 # The app lives in /app; Netlify builds from there and publishes app/dist.
-#
-# IMPORTANT: the map data artefact app/public/raids.geojson is gitignored while
-# the dataset's reuse licence is unresolved, so a git-connected build will NOT
-# include it (the live site would show its error state). Until the data can be
-# committed (licence resolved) or generated during the build, deploy from a local
-# build with the CLI, which uploads app/dist with the data without committing it:
-#
-#   cd app
-#   npm run build                      # data already in app/public via 05_build
-#   netlify deploy --dir=dist          # draft URL for review
-#   netlify deploy --dir=dist --prod   # production
+# The map data (app/public/raids.geojson) is committed, so a git-connected Netlify
+# build works out of the box: connect the GitHub repo in the Netlify dashboard and
+# it auto-deploys on every push. No CLI needed.
 
 [build]
   base = "app"
