@@ -521,6 +521,30 @@ body {
 .timeline .tlbtn:hover {
   background: #f3f4f6;
 }
+.timeline .mode {
+  flex: none;
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow: hidden;
+}
+.timeline .modebtn {
+  border: none;
+  background: #fff;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+.timeline .modebtn + .modebtn {
+  border-left: 1px solid var(--line);
+}
+.timeline .modebtn.on {
+  background: #2a6ebb;
+  color: #fff;
+  font-weight: 600;
+}
 .timeline .speed {
   flex: none;
   display: flex;
