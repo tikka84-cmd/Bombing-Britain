@@ -116,6 +116,18 @@ Deltas from the brief, and decisions:
 - Casualties are NEVER summed (data repeats running/area totals); About cites
   historical figures (~43k Blitz, ~60–70k war, ~9k V-weapons). Cards auto-flag
   combined/area totals and add a "Look this up" search link.
+- Area/region/city-wide totals (e.g. "entire London", "Region 1", "Wales",
+  "Liverpool air raids 2-8 May") repeat one figure across every place hit that
+  night. Detector: isAreaAggregate in 02_clean.mjs (widened from the old
+  London-only isLondonAggregate; alias kept for the test). 05_build imports it
+  and de-sizes those points (sz=-1, lon=1 flag) so they show grey, not coloured.
+  Decision: keep them as a faithful representation of the data, greyed + flagged
+  (DetailCard flag + About bullet), NOT deleted. ~4,400 points affected.
+- Area-total "ring" markers were built and REVERTED (user: too complex; keep it a
+  representation of the dataset with signposting). Do not reintroduce rings.
+  Note for any future casualty ticker: deduping area totals brings killed-only to
+  ~52k (was absurd), but it is still an UNDERCOUNT vs the cited ~60-70k (missing/
+  unspecified figures, late-war under-recording), so a headline ticker stays OFF.
 - Ambiguous-name geocode fixes -> region-keyed OVERRIDES table in 03_geocode (then
   re-run geocode + 05_build); non-raid incidents -> INCIDENT_NOTES in App.jsx.
 - Decided NOT to add more curated deep-dive cities. Curated data in app/src/data/

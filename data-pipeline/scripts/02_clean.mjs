@@ -124,14 +124,38 @@ export function deriveAttackTags(notes) {
   return [...tags]
 }
 
-// --- London city-wide aggregate flag ---------------------------------------
-// London casualty figures are often totals for the whole city, not the named
-// location. Flag these so the map never sizes/sums them per-point.
+// --- area / region / city-wide aggregate flag ------------------------------
+// Many casualty figures are totals for a whole city, region or group of places
+// (e.g. "Casualty figure for entire London", "Total casualty figure for Region
+// 1", "Casualties for Liverpool air raids 2-8 May", "Bromley + Camberwell + …"),
+// not for the named location. Flag these so the map never sizes or sums them
+// per-point: such points are shown neutral and the figure is gathered into a
+// single raid-night total marker instead.
 
-export function isLondonAggregate(notes) {
+export function isAreaAggregate(notes) {
   const t = String(notes ?? '').toLowerCase()
-  return /\bentire\s+london\b/.test(t) || /\bfor\s+(the\s+)?(entire\s+)?london\b/.test(t)
+  if (!t.trim()) return false
+  if (/\bentire\b/.test(t)) return true
+  if (/\ball of\b/.test(t)) return true
+  if (/\bcivil defence region\b/.test(t)) return true
+  if (/\bfor\s+region\b/.test(t)) return true
+  const totalish = /\b(casualt|casulty|total)\w*/.test(t)
+  if (totalish && /\bfor\s+(the\s+)?attacks?\b/.test(t)) return true
+  if (
+    totalish &&
+    /\bfor\b/.test(t) &&
+    /\b(london|wales|scotland|england|glasgow|clydeside|merseyside|liverpool|manchester|birmingham|midlands|norfolk|essex|kent|sussex|portsmouth|southampton|county|borough|area|region|district|whole)\b/.test(
+      t,
+    )
+  )
+    return true
+  if (/\+/.test(t) && totalish) return true
+  return false
 }
+
+// Back-compat alias: the original narrower name, now widened. Existing callers
+// and tests use isLondonAggregate.
+export const isLondonAggregate = isAreaAggregate
 
 // --- spreadsheet reader ----------------------------------------------------
 

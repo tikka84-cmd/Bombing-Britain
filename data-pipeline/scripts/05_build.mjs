@@ -1,18 +1,22 @@
 // 05_build — emit the app data artefact from the geocoded records.
 //
 // Input:   data-pipeline/out/03_geocoded.json
-// Output:  app/public/raids.geojson   (gitignored; licence unresolved)
+// Output:  app/public/raids.geojson   (per-location attack points)
 //
 // Only geocoded rows (with coordinates) go on the map. Casualty sizing is
-// computed honestly: London city-wide aggregates and non-numeric casualty
-// values are not used to size points (they would mislead), so they get a
-// neutral marker.
+// computed honestly: area/region/city-wide aggregate figures (e.g. "Casualty
+// figure for entire London", "Total casualty figure for Region 1") are NOT used
+// to size individual points, because the same total is repeated across every
+// place hit that night and would make each look like its own large raid. Those
+// points are shown neutral and flagged in the UI; the figure is still readable
+// in the detail card.
 //
 // Usage:  node scripts/05_build.mjs
 
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { isAreaAggregate } from './02_clean.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const pipelineDir = path.resolve(__dirname, '..')
@@ -44,9 +48,10 @@ function main() {
   for (const r of records) {
     if (r.lat == null || r.lon == null) continue // unresolved -> not mapped
 
-    // size value: only trustworthy, per-location numeric totals
+    // an area/region/city-wide aggregate figure: don't size the point by it
+    const area = isAreaAggregate(r.notes)
     let sizeValue = -1
-    if (!r.londonAggregate && r.total.value != null && SIZED_BASES.has(r.total.basis)) {
+    if (!area && r.total.value != null && SIZED_BASES.has(r.total.basis)) {
       sizeValue = r.total.value
     }
 
@@ -65,7 +70,7 @@ function main() {
         kV: r.killed.value, kB: r.killed.basis, kR: r.killed.raw,
         iV: r.injured.value, iB: r.injured.basis, iR: r.injured.raw,
         tV: r.total.value, tB: r.total.basis, tR: r.total.raw,
-        lon: r.londonAggregate ? 1 : 0,
+        lon: area ? 1 : 0, // area/region/city-wide aggregate flag (was London-only)
         tags: r.attackTags.join(','),
         notes: r.notes || '',
         link: r.link || '',
@@ -83,10 +88,12 @@ function main() {
   const days = features.map((f) => f.properties.t).filter((t) => t !== NO_DATE)
   console.log(`Timeline day index range: ${Math.min(...days)} … ${Math.max(...days)} (0 = 1939-09-01)`)
   const sized = features.filter((f) => f.properties.sz >= 0).length
+  const area = features.filter((f) => f.properties.lon === 1).length
   console.log(`Wrote ${path.relative(repoRoot, outPath).replace(/\\/g, '/')}`)
   console.log(`Features: ${features.length.toLocaleString('en-GB')} (mapped)`)
   console.log(`  with usable casualty size: ${sized.toLocaleString('en-GB')}`)
-  console.log(`  neutral (London-aggregate / non-numeric / zero): ${(features.length - sized).toLocaleString('en-GB')}`)
+  console.log(`  neutral (area aggregate / non-numeric / zero): ${(features.length - sized).toLocaleString('en-GB')}`)
+  console.log(`  flagged as area/region/city-wide aggregate: ${area.toLocaleString('en-GB')}`)
   console.log(`File size: ${(fs.statSync(outPath).size / 1024 / 1024).toFixed(2)} MB`)
 }
 
