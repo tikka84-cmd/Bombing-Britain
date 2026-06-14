@@ -43,13 +43,32 @@ function main() {
     process.exit(1)
   }
   const records = JSON.parse(fs.readFileSync(inPath, 'utf8'))
+  const mapped = records.filter((r) => r.lat != null && r.lon != null)
+
+  // An area/region/city-wide total is repeated across every place hit that night,
+  // often with the explanatory note on only one of the rows. So group rows that
+  // share a date and an identical non-zero casualty figure, and if ANY member's
+  // note marks it an aggregate, treat the whole cluster as one (the blank-note
+  // siblings get the same neutral treatment). Genuine coincidental matches are
+  // tiny ("1 injured" across a few places) and carry no such note, so untouched.
+  const groups = new Map()
+  for (const r of mapped) {
+    const tv = r.total.value
+    if (tv == null || tv === 0) continue
+    const key = [r.startDate, r.killed.value, r.injured.value, tv].join('|')
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key).push(r)
+  }
+  const areaMemberIds = new Set()
+  for (const [, rs] of groups) {
+    if (rs.some((r) => isAreaAggregate(r.notes))) for (const r of rs) areaMemberIds.add(r.id)
+  }
+  const isAreaPoint = (r) => areaMemberIds.has(r.id) || isAreaAggregate(r.notes)
 
   const features = []
-  for (const r of records) {
-    if (r.lat == null || r.lon == null) continue // unresolved -> not mapped
-
+  for (const r of mapped) {
     // an area/region/city-wide aggregate figure: don't size the point by it
-    const area = isAreaAggregate(r.notes)
+    const area = isAreaPoint(r)
     let sizeValue = -1
     if (!area && r.total.value != null && SIZED_BASES.has(r.total.basis)) {
       sizeValue = r.total.value
