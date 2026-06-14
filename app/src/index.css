@@ -480,10 +480,11 @@ body {
   color: #2a6ebb;
 }
 
-/* footer attribution */
+/* footer attribution — sits just above the (single-row) timeline on desktop so
+   the centred timeline panel never overlaps and clips it; hidden on mobile. */
 .attribution {
   position: absolute;
-  bottom: 16px;
+  bottom: 112px;
   right: 14px;
   z-index: 5;
   max-width: 340px;
