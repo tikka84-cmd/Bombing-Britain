@@ -130,6 +130,9 @@ Deltas from the brief, and decisions:
   unspecified figures, late-war under-recording), so a headline ticker stays OFF.
 - Ambiguous-name geocode fixes -> region-keyed OVERRIDES table in 03_geocode (then
   re-run geocode + 05_build); non-raid incidents -> INCIDENT_NOTES in App.jsx.
+  Isle of Wight has a dedicated bbox-constrained handler in 03_geocode (the "Isle
+  of Wight" qualifier mis-resolved and dragged all 169 island rows to one
+  mainland point); towns resolve within the island, hamlets fall back to Newport.
 - Decided NOT to add more curated deep-dive cities. Curated data in app/src/data/
   is committed; raw/, out/, gazetteer/, app/public/raids.geojson gitignored.
 

@@ -30,6 +30,14 @@ const LONDON_BBOX = { latMin: 51.28, latMax: 51.7, lonMin: -0.52, lonMax: 0.34 }
 const inLondon = (lat, lon) =>
   lat >= LONDON_BBOX.latMin && lat <= LONDON_BBOX.latMax && lon >= LONDON_BBOX.lonMin && lon <= LONDON_BBOX.lonMax
 
+// Isle of Wight: the qualifier "Isle of Wight" resolves badly in the gazetteer
+// and dragged every island town to one wrong mainland point. Resolve such towns
+// within the island's bounding box, falling back to Newport (island centre).
+const IOW_BBOX = { latMin: 50.55, latMax: 50.8, lonMin: -1.62, lonMax: -1.04 }
+const IOW_CENTRE = { lat: 50.7006, lon: -1.292, name: 'Newport, Isle of Wight' }
+const inIoW = (lat, lon) =>
+  lat >= IOW_BBOX.latMin && lat <= IOW_BBOX.latMax && lon >= IOW_BBOX.lonMin && lon <= IOW_BBOX.lonMax
+
 // --- name normalisation ----------------------------------------------------
 
 export function normName(input) {
@@ -176,9 +184,34 @@ export function geocodePlace(gaz, name, country, isLondonRegion) {
   // known non-GB country (Channel Islands): the GB gazetteer cannot place it
   if (country && !admin1) return null
 
+  const segs = name.split(',').map((s) => s.trim()).filter(Boolean)
+
+  // Isle of Wight: resolve the town within the island, not via the mis-placed
+  // "Isle of Wight" qualifier. Take the most specific segment that is a real
+  // island place; otherwise put it at Newport (island centre), flagged low.
+  if (admin1 === 'ENG' && segs.some((s) => normName(s) === 'isle of wight')) {
+    const townSeg = segs.find((s) => normName(s) && normName(s) !== 'isle of wight')
+    if (townSeg) {
+      const tn = normName(townSeg)
+      const pool = [...(gaz.primary.get(tn) || []), ...(gaz.alt.get(tn) || [])].filter(
+        (c) => c.admin1 === 'ENG' && inIoW(c.lat, c.lon),
+      )
+      if (pool.length) {
+        const best = rank(pool)[0]
+        return {
+          lat: best.lat, lon: best.lon, matchedName: best.name, fcode: best.fcode,
+          admin1: best.admin1, method: 'iow', confidence: 'high',
+        }
+      }
+    }
+    return {
+      lat: IOW_CENTRE.lat, lon: IOW_CENTRE.lon, matchedName: IOW_CENTRE.name, fcode: 'PPLA2',
+      admin1: 'ENG', method: 'iow-centre', confidence: 'low',
+    }
+  }
+
   // "Place, Qualifier" (e.g. "Garston, Watford"): if the first part is ambiguous,
   // anchor on the qualifier and pick the candidate nearest to it.
-  const segs = name.split(',').map((s) => s.trim()).filter(Boolean)
   if (segs.length >= 2) {
     let cands = gaz.primary.get(normName(segs[0])) || []
     if (admin1) {
