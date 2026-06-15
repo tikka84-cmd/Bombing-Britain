@@ -373,6 +373,15 @@ function aliasName(location, regionName) {
     s = s.replace(/\bNewcastle\b(?![\s-]*(?:upon|under))/gi, 'Newcastle upon Tyne')
     s = s.replace(/\bBerwick\b(?![\s-]*(?:upon|on))/gi, 'Berwick-upon-Tweed')
   }
+  if (regionName === 'North Western') {
+    // "Crosby" in the North-West is Great Crosby (Merseyside); the bare name only
+    // matches a Cumbrian hamlet. Leave Great/Little Crosby and Crosby Ravensworth/
+    // Garrett/Villa (genuine distinct places) untouched.
+    s = s.replace(
+      /(?<!Great )(?<!Little )\bCrosby\b(?!\s+(?:Ravensworth|Garrett|Villa))/gi,
+      'Great Crosby',
+    )
+  }
   return s
 }
 
