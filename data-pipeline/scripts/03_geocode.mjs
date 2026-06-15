@@ -38,6 +38,28 @@ const IOW_CENTRE = { lat: 50.7006, lon: -1.292, name: 'Newport, Isle of Wight' }
 const inIoW = (lat, lon) =>
   lat >= IOW_BBOX.latMin && lat <= IOW_BBOX.latMax && lon >= IOW_BBOX.lonMin && lon <= IOW_BBOX.lonMax
 
+// Approximate centre and radius (km) of each WW2 Civil Defence Region. Used only
+// as a tie-breaker: when an ambiguous name has several candidates, prefer the one
+// within its record's region, which fixes wrong-namesake placements (e.g. a
+// "Berwick" in the Northern region -> Berwick-upon-Tweed, not Berwick in Sussex).
+// Never invents a placement: if no candidate falls in range, the normal ranking
+// applies. Radii are generous to keep legitimately remote places (Shetland etc.).
+const REGION_CENTRES = {
+  Northern: { lat: 54.9, lon: -1.8, r: 150 },
+  'North Eastern': { lat: 53.9, lon: -1.2, r: 130 },
+  'North Western': { lat: 53.9, lon: -2.7, r: 180 },
+  'North Midlands': { lat: 53.0, lon: -0.9, r: 130 },
+  Midlands: { lat: 52.5, lon: -1.9, r: 120 },
+  Eastern: { lat: 52.2, lon: 0.4, r: 150 },
+  London: { lat: 51.5, lon: -0.1, r: 45 },
+  Southern: { lat: 51.0, lon: -1.2, r: 130 },
+  'South Eastern': { lat: 51.1, lon: 0.4, r: 110 },
+  'South Western': { lat: 50.7, lon: -3.8, r: 300 }, // wide: includes Isles of Scilly
+  Wales: { lat: 52.3, lon: -3.7, r: 170 },
+  Scotland: { lat: 56.5, lon: -4.0, r: 480 },
+  'Northern Ireland': { lat: 54.6, lon: -6.5, r: 130 },
+}
+
 // --- name normalisation ----------------------------------------------------
 
 export function normName(input) {
@@ -176,9 +198,17 @@ function haversine(lat1, lon1, lat2, lon2) {
   return 2 * R * Math.asin(Math.sqrt(a))
 }
 
+// Tie-breaker: keep only candidates within the record's region (if any are);
+// otherwise leave the pool untouched. Never reduces a pool to nothing.
+function nearRegion(pool, rc) {
+  if (!rc || pool.length <= 1) return pool
+  const near = pool.filter((c) => haversine(c.lat, c.lon, rc.lat, rc.lon) <= rc.r)
+  return near.length ? near : pool
+}
+
 // --- geocode one place -----------------------------------------------------
 
-export function geocodePlace(gaz, name, country, isLondonRegion) {
+export function geocodePlace(gaz, name, country, isLondonRegion, rc) {
   const admin1 = COUNTRY_TO_ADMIN1[country] || null
 
   // known non-GB country (Channel Islands): the GB gazetteer cannot place it
@@ -218,8 +248,9 @@ export function geocodePlace(gaz, name, country, isLondonRegion) {
       const m = cands.filter((c) => c.admin1 === admin1)
       if (m.length) cands = m
     }
+    cands = nearRegion(cands, rc)
     if (cands.length > 1) {
-      const anchor = geocodePlace(gaz, segs.slice(1).join(', '), country, false)
+      const anchor = geocodePlace(gaz, segs.slice(1).join(', '), country, false, rc)
       if (anchor) {
         let best = null
         let bestD = Infinity
@@ -288,6 +319,7 @@ export function geocodePlace(gaz, name, country, isLondonRegion) {
     if (!m.length) return null
     pool = m
   }
+  pool = nearRegion(pool, rc)
   // London disambiguation
   if (isLondonRegion) {
     const m = pool.filter((c) => inLondon(c.lat, c.lon))
@@ -339,6 +371,7 @@ function aliasName(location, regionName) {
   let s = location
   if (regionName === 'Northern') {
     s = s.replace(/\bNewcastle\b(?![\s-]*(?:upon|under))/gi, 'Newcastle upon Tyne')
+    s = s.replace(/\bBerwick\b(?![\s-]*(?:upon|on))/gi, 'Berwick-upon-Tweed')
   }
   return s
 }
@@ -376,13 +409,15 @@ function main() {
       methodCounts.set('override', (methodCounts.get('override') || 0) + 1)
       continue
     }
-    const isLondonRegion = r.region && r.region.name === 'London'
-    const geoName = aliasName(r.location, r.region && r.region.name)
-    const key = `${geoName}|${r.country}|${isLondonRegion ? 'L' : ''}`
+    const regionName = r.region && r.region.name
+    const isLondonRegion = regionName === 'London'
+    const rc = REGION_CENTRES[regionName] || null
+    const geoName = aliasName(r.location, regionName)
+    const key = `${geoName}|${r.country}|${isLondonRegion ? 'L' : ''}|${regionName || ''}`
     let g
     if (cache.has(key)) g = cache.get(key)
     else {
-      g = geocodePlace(gaz, geoName, r.country, isLondonRegion)
+      g = geocodePlace(gaz, geoName, r.country, isLondonRegion, rc)
       cache.set(key, g)
     }
     if (g) {
