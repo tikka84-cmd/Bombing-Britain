@@ -261,6 +261,22 @@ export function geocodePlace(gaz, name, country, isLondonRegion, rc) {
             best = c
           }
         }
+        // if the nearest match is an admin-area centroid (which can sit in odd
+        // spots, e.g. offshore), snap to a same-named settlement right next to it.
+        // Only a short hop, so it never jumps to a different county's namesake.
+        if (best && best.fclass === 'A') {
+          let pBest = null
+          let pD = Infinity
+          for (const c of cands) {
+            if (c.fclass !== 'P') continue
+            const d = haversine(c.lat, c.lon, best.lat, best.lon)
+            if (d <= 15 && d < pD) {
+              pD = d
+              pBest = c
+            }
+          }
+          if (pBest) best = pBest
+        }
         if (best) {
           if (bestD <= 40) {
             return {
