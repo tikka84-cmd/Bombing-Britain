@@ -351,6 +351,9 @@ export function geocodePlace(gaz, name, country, isLondonRegion, rc) {
 const OVERRIDES = [
   // "Newcastle" in the Northern region is Newcastle upon Tyne, not under-Lyme.
   { loc: 'Newcastle', region: 'Northern', lat: 54.9783, lon: -1.6178, name: 'Newcastle upon Tyne' },
+  // GeoNames' "Garston" point sits ~2km south, out in the Mersey estuary; nudge
+  // it onto the Garston district itself.
+  { loc: 'Garston, Liverpool', region: 'North Western', lat: 53.3505, lon: -2.9039, name: 'Garston, Liverpool' },
 ]
 function overrideFor(r) {
   return OVERRIDES.find(
