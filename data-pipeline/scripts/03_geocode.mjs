@@ -370,6 +370,9 @@ const OVERRIDES = [
   // GeoNames' "Garston" point sits ~2km south, out in the Mersey estuary; nudge
   // it onto the Garston district itself.
   { loc: 'Garston, Liverpool', region: 'North Western', lat: 53.3505, lon: -2.9039, name: 'Garston, Liverpool' },
+  // GeoNames points sit on the water's edge; nudge onto land.
+  { loc: 'Guardbridge', region: 'Scotland', lat: 56.3645, lon: -2.8925, name: 'Guardbridge' }, // Eden estuary head
+  { loc: 'Howick', region: 'Northern', lat: 55.447, lon: -1.616, name: 'Howick' }, // Northumberland coast
 ]
 function overrideFor(r) {
   return OVERRIDES.find(
