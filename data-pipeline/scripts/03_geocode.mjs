@@ -329,6 +329,20 @@ function overrideFor(r) {
   )
 }
 
+// Region-aware name aliases for ambiguous bare names, applied before geocoding
+// (the original location is kept for display). In the North-East ("Northern")
+// civil-defence region a bare "Newcastle" means Newcastle upon Tyne, but the
+// gazetteer's exact "Newcastle" is a Shropshire/Welsh-border village, so qualify
+// it (covers "Gosforth, Newcastle", "Newcastle + Gateshead", "Heaton, Newcastle"
+// etc.). Forms already saying "upon"/"under" are left alone.
+function aliasName(location, regionName) {
+  let s = location
+  if (regionName === 'Northern') {
+    s = s.replace(/\bNewcastle\b(?![\s-]*(?:upon|under))/gi, 'Newcastle upon Tyne')
+  }
+  return s
+}
+
 // --- main ------------------------------------------------------------------
 
 function main() {
@@ -363,11 +377,12 @@ function main() {
       continue
     }
     const isLondonRegion = r.region && r.region.name === 'London'
-    const key = `${r.location}|${r.country}|${isLondonRegion ? 'L' : ''}`
+    const geoName = aliasName(r.location, r.region && r.region.name)
+    const key = `${geoName}|${r.country}|${isLondonRegion ? 'L' : ''}`
     let g
     if (cache.has(key)) g = cache.get(key)
     else {
-      g = geocodePlace(gaz, r.location, r.country, isLondonRegion)
+      g = geocodePlace(gaz, geoName, r.country, isLondonRegion)
       cache.set(key, g)
     }
     if (g) {
