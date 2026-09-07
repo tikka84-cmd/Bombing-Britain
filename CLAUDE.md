@@ -90,7 +90,12 @@ Deltas from the brief, and decisions:
 - Geocoder needs `data-pipeline/gazetteer/GB.txt` (GeoNames GB dump, CC BY 4.0,
   gitignored). 95.2% of rows resolved; unmatched/Channel Islands go to
   out/unresolved.json, never guessed. Geocode confidence: high/medium/low.
-- App: React + MapLibre GL + CARTO Positron basemap (no API key). `05_build.mjs`
+- App: React + MapLibre GL + OpenFreeMap Positron basemap (keyless vector style,
+  `https://tiles.openfreemap.org/styles/positron`). Was CARTO Positron raster
+  tiles until Sep 2026, when CARTO moved its public basemap tiles behind an API
+  key (the live map showed an "API KEY REQUIRED" watermark); switched to keyless
+  OpenFreeMap, same light aesthetic. Do NOT reintroduce the CARTO cartocdn tiles
+  without a key. `05_build.mjs`
   emits app/public/raids.geojson (gitignored). Run locally: `npm run dev` in
   app/ (or the Preview launch config). No public deploy until licence resolved.
 - Open: resolve dataset licence before any public deploy; optionally email the
@@ -98,7 +103,7 @@ Deltas from the brief, and decisions:
 
 ## App behaviour & guardrails (decided in polish sessions)
 
-- Visual: LIGHT theme (CARTO Positron). Dark theme was tried and reverted (place
+- Visual: LIGHT theme (OpenFreeMap Positron). Dark theme was tried and reverted (place
   names unreadable); don't reintroduce dark mode / serif title without asking.
 - Timeline reveal MUST stay `setFilter` with `['<=', t, cur]` (buildFilter /
   applyFilters in App.jsx). A paint-radius reveal broke rendering and was reverted.

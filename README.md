@@ -132,6 +132,7 @@ Data: *Bombing Britain: an air raid map*, Dr Laura Blomvall, University of York,
 in collaboration with Routledge / Taylor & Francis Group and The National
 Archives, funded by the AHRC. Underlying records: The National Archives series
 HO 203 (Ministry of Home Security: Daily Intelligence Reports), Crown Copyright.
-Geocoding: GeoNames (CC BY 4.0). Basemap: © OpenStreetMap contributors © CARTO.
+Geocoding: GeoNames (CC BY 4.0). Basemap: OpenFreeMap, © OpenMapTiles, data from
+© OpenStreetMap contributors.
 This project is an independent visualisation and is not affiliated with or
 endorsed by the above.

@@ -49,7 +49,7 @@ All phases 0–8 plus polish rounds are done. Build clean, ESLint clean, app
 
 Timeline scrubber + play/pause (Slow/Normal/Fast, day-step buttons, arrow keys,
 space). `All | Recent` mode toggle in the player (All default; Recent = rolling
-~30-day window). National MapLibre map (light CARTO Positron), 31,287 located
+~30-day window). National MapLibre map (light OpenFreeMap Positron), 31,287 located
 attacks coloured/sized by total casualties. Filters: Reset-all, date range
 (year shortcuts + From/To pickers, single day works), country, time of day,
 recorded attack type (where noted), casualty band, attacking force (Germany /
@@ -62,6 +62,12 @@ Mobile: filters collapse behind a toggle. Sharing meta tags + on-theme favicon.
 
 ## Done this session (latest commits at HEAD)
 
+- 85c8ed9 Switch basemap to keyless OpenFreeMap Positron. CARTO's public raster
+  tiles started requiring an API key (live map showed an "API KEY REQUIRED"
+  watermark over the tiles; data points were unaffected). Swapped to OpenFreeMap
+  Positron (keyless vector style, same light look); dots did not move (same
+  lat/lon, same Web Mercator projection). Also re-fit to GB on the map `load`
+  event so the async vector style frames tight on first paint. Verified live.
 - 89ea0fd Promote All/Recent to a prominent toggle in the timeline player
 - bd70dbe Revert paint-based reveal; restore previous setFilter approach
 - 03b62e1 (reverted) paint-based reveal attempt — DO NOT redo (see CLAUDE.md guardrails)
@@ -81,7 +87,9 @@ Mobile: filters collapse behind a toggle. Sharing meta tags + on-theme favicon.
 ## Open questions for the user
 
 - Licence decision (above) — the one real blocker to publishing.
-- GitHub: not set up yet (user parked it). gh CLI not installed; no git remote.
+- GitHub: set up and live. Remote origin = github.com/tikka84-cmd/Bombing-Britain
+  (branch master), Netlify auto-deploys on push. gh CLI is not installed (not
+  needed); pushes use HTTPS + Git Credential Manager (browser sign-in, cached).
 - Optional, parked: og:image (drop a 1200x630 screenshot at app/public/og-image.png
   and uncomment the og:image meta), Baby Blitz already added, more events welcome.
 
